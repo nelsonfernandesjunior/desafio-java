@@ -1,0 +1,46 @@
+# language: pt
+  @Site
+  Funcionalidade: Busca de produto no site
+    Como um usuário do site
+    Eu quero buscar um produto
+    Para encontrar rapidamente o que preciso comprar
+
+    Background:
+    Dado que estou na página inicial do site
+
+    @Busca @CT-01
+    Cenário: Busca de produto existente
+#      Dado que estou na página inicial do site
+      Quando eu busco pelo produto existente
+      Então devo ver o resultado de busca contendo o produto
+#     E valido a lista de resultados com o produto
+
+    @Busca @CT-02
+    Cenário: Busca de produto com múltiplos resultados
+#      Dado que estou na página inicial do site
+      Quando eu busco pelo produto existente com múltiplos resultados
+      Então devo ver uma lista com múltiplos produtos
+#      E cada resultado deve conter informações básicas do produto
+#      E a quantidade de resultados deve ser exibida
+#
+    @Busca @CT-03
+    Cenário: Busca de produto inexistente
+#      Dado que estou na página inicial do site
+      Quando eu busco pelo produto inexistente
+      Então devo ver a mensagem sem resultado
+#      E não deve exibir nenhum produto na lista
+#
+    @Busca @CT-04
+#    Cenário: Busca com sugestões automáticas
+#      Dado que estou na página inicial do site
+#      Quando eu digito parte da palavra na busca
+#      Então devo ver sugestões de busca automática
+#      E posso selecionar uma sugestão da lista
+#
+#    @Busca @CT-05
+#    Cenário: Busca com filtros
+#      Dado que estou na página de resultados para "fone de ouvido"
+#      Quando aplico o filtro por marca "JBL"
+#      E aplico o filtro por preço máximo "R$ 200"
+#      Então devo ver apenas produtos da marca JBL
+#      E todos os produtos devem ter preço menor que R$ 200
