@@ -6,7 +6,7 @@ Automation testing with Java
 - ChromeDriver (já está no projeto)
 - Intellij IDEA Community Edition (pode ser outra IDE)
 - Intellij plugins:
-  + Cucumber for Java, Gherkin, Maven, Java, JUnit, GitHub
+  + Cucumber for Java, Gherkin, Maven, Java, JUnit, GitHub, Selenium
 - Java
 - Clone o projeto para o computador
 # Como rodar os testes
