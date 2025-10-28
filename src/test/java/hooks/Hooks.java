@@ -55,7 +55,7 @@ public class Hooks {
         if (navegadorAberto && homePage != null) {
             homePage.fecharNavegador();
             navegadorAberto = false;
-            System.out.println("✅ Navegador fechado com sucesso");
+            System.out.println("==>avegador fechado com sucesso");
         }
     }
 
@@ -64,7 +64,7 @@ public class Hooks {
     }
 
 
-    // opçao
+    // opcao
 
 //    @After
 //    public void tearDown(Scenario scenario) {
@@ -78,7 +78,7 @@ public class Hooks {
 //        if (navegadorAberto) {
 //            DriverManager.quitDriver();
 //            navegadorAberto = false;
-//            System.out.println("✅ Navegador fechado após cenário");
+//            System.out.println("==> Navegador fechado após cenário");
 //        }
 //    }
 //
