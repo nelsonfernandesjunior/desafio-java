@@ -6,8 +6,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.PageFactory;
 import utils.DriverManager;
+import utils.PdfReportGenerator;
+import utils.ScreenshotUtils;
 
 import java.time.Duration;
+
+import static utils.ScreenshotUtils.takeScreenshot;
 
 public class BasePage {
     protected WebDriver driver;
@@ -30,6 +34,8 @@ public class BasePage {
 
     public void click(By locator) {
         System.out.println("🖱️ Tentando clicar no elemento: " + locator);
+
+        takeScreenshot("ANTES_CLIQUE_" + locator.toString());
 
         if (driver == null) {
             throw new IllegalStateException("==> DRIVER É NULL! Verifique a inicialização nos Hooks.");
@@ -62,6 +68,8 @@ public class BasePage {
                 try { Thread.sleep(1000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
             }
         }
+
+        takeScreenshot("DEPOIS_CLIQUE_" + locator.toString());
     }
 
     // Aguardar elemento estar visível
@@ -319,6 +327,18 @@ public class BasePage {
         if (driver != null) {
             driver.close();
             System.out.println("Aba fechada com sucesso!");
+        }
+    }
+
+    private void takeScreenshot(String action) {
+        try {
+            WebDriver driver = DriverManager.getDriver();
+            if (driver != null) {
+                String screenshotPath = ScreenshotUtils.takeScreenshot(driver, action);
+                PdfReportGenerator.addScreenshot(screenshotPath);
+            }
+        } catch (Exception e) {
+            System.out.println("⚠️ Não foi possível tirar screenshot: " + e.getMessage());
         }
     }
 

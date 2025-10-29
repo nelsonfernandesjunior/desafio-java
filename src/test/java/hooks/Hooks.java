@@ -8,14 +8,22 @@ import org.openqa.selenium.WebDriver;
 import utils.DriverManager;
 import functions.WebDriverFactory;
 import pages.HomePage;
+import utils.PdfReportGenerator;
+import utils.ScreenshotUtils;
 
 public class Hooks {
     private static boolean navegadorAberto = false;
     private static HomePage homePage;
+    private String currentScenarioName; // ← ADICIONAR ESTA VARIÁVEL
 
     @Before
     public void setUp(Scenario scenario) {
         System.out.println("=> Iniciando o cenário de teste: " + scenario.getName());
+        this.currentScenarioName = scenario.getName(); // ← INICIALIZAR A VARIÁVEL
+
+        // Prepara sistema de screenshots
+        ScreenshotUtils.resetCounter(scenario.getName());
+        PdfReportGenerator.clearScreenshots();
 
         if (!navegadorAberto) {
             WebDriver driver = WebDriverFactory.createDriver();
@@ -27,11 +35,21 @@ public class Hooks {
             navegadorAberto = true;
             System.out.println("=> Navegador aberto e site acessado via Hooks");
         }
+
+        // Primeiro screenshot - página inicial
+        takeScreenshot("00_Pagina_Inicial");
     }
 
     @After
     public void tearDown(Scenario scenario) {
         System.out.println("=> Finalizando o cenário de teste: " + scenario.getName());
+
+        // Screenshot final
+        takeScreenshot("99_Final_" + (scenario.isFailed() ? "FALHA" : "SUCESSO"));
+
+        // Gera PDF do relatório
+        String status = scenario.isFailed() ? "FALHOU" : "PASSOU";
+        PdfReportGenerator.generatePdfReport(currentScenarioName, status); // ← USAR A VARIÁVEL
 
         if (scenario.isFailed()) {
             System.out.println("=> Cenário FALHOU: " + scenario.getName());
@@ -45,11 +63,15 @@ public class Hooks {
         if (navegadorAberto && homePage != null) {
             homePage.fecharNavegador();
             navegadorAberto = false;
-            System.out.println("==> Navegador fechado com sucesso");
+            System.out.println("✅ Navegador fechado com sucesso");
         }
     }
 
-    public static WebDriver getDriver() {
-        return DriverManager.getDriver();
+    private void takeScreenshot(String stepName) {
+        WebDriver driver = DriverManager.getDriver();
+        if (driver != null) {
+            String screenshotPath = ScreenshotUtils.takeScreenshot(driver, stepName);
+            PdfReportGenerator.addScreenshot(screenshotPath);
+        }
     }
 }
