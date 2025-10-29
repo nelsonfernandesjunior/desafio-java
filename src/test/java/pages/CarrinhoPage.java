@@ -21,7 +21,8 @@ public class CarrinhoPage extends BasePage {
     private By iconeCarrinho = By.id("menuCart");
     private By adicionarMaisQuantidade = By.xpath("//div[@class='plus']");
     private By quantidadeProduto = By.name("quantity");
-    private By qtdeProdutoCarrinho = By.xpath("//td[@class='smollCell quantityMobile']");
+//    private By qtdeProdutoCarrinho = By.xpath("//td[@class='smollCell quantityMobile']");
+    private By qtdeProdutoCarrinho = By.xpath("//label[@class='roboto-regular ng-binding']");
     private By grupoTablets = By.id("tabletsImg");
     private By proTablet = By.id("18");
     private By botaoHome = By.className("logo");
@@ -33,6 +34,8 @@ public class CarrinhoPage extends BasePage {
     private By soldOutMessage = By.xpath("//button[contains(@class,'disabled')]//span[contains(text(),'SOLD OUT')]");
     private By successMessage = By.cssSelector(".successMessage");
 
+    private By botaoRemove = By.cssSelector("a.remove.red");
+
     private static final String PRODUTO_1 = "HP ROAR WIRELESS SPEAKER";
     private static final String PRODUTO_2 = "BOMBIZINI GUZINI";
     private static final String PRODUTO_3 = "HP PRO TABLET 608 G1";
@@ -43,6 +46,8 @@ public class CarrinhoPage extends BasePage {
     }
 
     public void selecionarProdutoNaPaginaInicial() throws InterruptedException {
+        System.out.println("==> Garantir que está na página inicial");
+        garantirQueEstaNaPaginaInicial();
         System.out.println("==> Selecionando produto na página inicial");
 
         garantirQueEstaNaPaginaInicial();
@@ -65,6 +70,12 @@ public class CarrinhoPage extends BasePage {
     }
 
     public void verificarProdutoNoCarrinho() {
+        System.out.println("==> Verificando produto no carrinho");
+        verificarProdutoNoCarrinhoPorNome(PRODUTO_1);
+        removerProdutoDoCarrinho();
+    }
+
+    public void verificarOsProdutosNoCarrinho() {
         System.out.println("==> Verificando produto no carrinho");
         verificarProdutoNoCarrinhoPorNome(PRODUTO_1);
     }
@@ -103,7 +114,6 @@ public class CarrinhoPage extends BasePage {
 
     public void verificarQuantidadeNoCarrinho(int quantidadeEsperada) {
         System.out.println("==> Verificando quantidade no carrinho: " + quantidadeEsperada);
-        acessarCarrinho();
         System.out.println("==> Quantidade esperada: " + quantidadeEsperada);
 
         int quantidadeAtual = obterQuantidadeDoProduto(PRODUTO_1);
@@ -111,6 +121,7 @@ public class CarrinhoPage extends BasePage {
 
         Assert.assertEquals("==> Quantidade incorreta no carrinho", quantidadeEsperada, quantidadeAtual);
         System.out.println("==> Quantidade verificada: " + quantidadeAtual);
+        removerProdutoDoCarrinho();
     }
 
     public void voltarParaPaginaInicial() {
@@ -137,12 +148,14 @@ public class CarrinhoPage extends BasePage {
         Assert.assertTrue("2 itens encontrados: ", textoTotalItensCarrinho.contains("(2 Items)"));
 
         System.out.println("==> 2 produtos verificados no carrinho");
+        removerProdutoDoCarrinho();
+        removerProdutoDoCarrinho();
     }
 
     public void acessarCarrinho() {
         System.out.println("==> Acessando carrinho de compras");
         click(iconeCarrinho);
-//        System.out.println("==> Carrinho acessado");
+        System.out.println("==> Carrinho acessado");
     }
 
     public int obterQuantidadeDoProduto(String nomeProduto) {
@@ -152,11 +165,21 @@ public class CarrinhoPage extends BasePage {
         System.out.println("==> Conteúdo capturado QUANTIDADE DO PRODUTO: " + textoQuantidade);
 
         try {
-            int quantidade = Integer.parseInt(textoQuantidade.trim());
+            // Extrair apenas os números do texto
+            String apenasNumeros = textoQuantidade.replaceAll("[^0-9]", "");
+            System.out.println("==> Apenas números extraídos: '" + apenasNumeros + "'");
+
+            if (apenasNumeros.isEmpty()) {
+                System.out.println("==> Nenhum número encontrado no texto");
+                return 0;
+            }
+
+            int quantidade = Integer.parseInt(apenasNumeros);
             System.out.println("==> Quantidade convertida: " + quantidade);
             return quantidade;
+
         } catch (NumberFormatException e) {
-            System.out.println("==> Erro ao converter quantidade: '" + textoQuantidade + "'");
+            System.out.println("==> Erro ao converter quantidade: '" + textoQuantidade + "' - " + e.getMessage());
             return 0;
         }
     }
@@ -175,13 +198,19 @@ public class CarrinhoPage extends BasePage {
     }
 
     public void selecionarProdutoEsgotado() {
+        garantirQueEstaNaPaginaInicial();
         System.out.println("==> Selecionando produto esgotado na página inicial");
 
         click(grupoHeadPhones);
         waitForElementVisible(boseSoundLink, 4);
         scrollToElement(boseSoundLink);
         click(boseSoundLink);
-        click(adicionarCarrinho);
+        isElementVisible(adicionarCarrinho);
+        isElementClickable(adicionarCarrinho);
+        Assert.assertFalse("Botão 'Adicionar ao Carrinho' deveria NÃO estar clicável para produto esgotado",
+                isElementClickable(adicionarCarrinho));
+
+        System.out.println("==> Produto esgotado - botão visível mas não clicável");
         acessarCarrinho();
     }
 
@@ -193,5 +222,10 @@ public class CarrinhoPage extends BasePage {
         Assert.assertTrue("==> O carrinho não está vazio", carrinhoTexto.contains("Your shopping cart is empty"));
 
         System.out.println("==> Carrinho vazio verificado");
+    }
+
+    public void removerProdutoDoCarrinho() {
+        click(botaoRemove);
+
     }
 }

@@ -93,6 +93,18 @@ public class BasePage {
         }
     }
 
+    public boolean isElementClickable(By locator) {
+        try {
+            WebElement element = driver.findElement(locator);
+            boolean clickable = element.isDisplayed() && element.isEnabled();
+            System.out.println("==> Elemento clicável: " + locator + " = " + clickable);
+            return clickable;
+        } catch (Exception e) {
+            System.out.println("==> Elemento não clicável: " + locator + " - " + e.getMessage());
+            return false;
+        }
+    }
+
     // Enviar texto para um campo
     public void sendKeys(By locator, String text) {
         System.out.println("==>  Digitando texto no elemento: " + locator);
@@ -188,21 +200,6 @@ public class BasePage {
             }
         }
     }
-
-//    // Obter texto de um elemento
-//    public String getText(By locator) {
-//        System.out.println("==> Obtendo texto do elemento: " + locator);
-//
-//        try {
-//            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-//            String text = element.getText();
-//            System.out.println("==> Texto obtido: '" + text + "'");
-//            return text;
-//        } catch (Exception e) {
-//            System.out.println("==> Erro ao obter texto: " + e.getMessage());
-//            throw new RuntimeException("Falha ao obter texto do elemento: " + locator, e);
-//        }
-//    }
 
     // Metodo getText que já imprime no log automaticamente
     public String getText(By locator) {
@@ -300,7 +297,6 @@ public class BasePage {
                 .perform();
     }
 
-    // Garantir que está na página inicial
     public void garantirQueEstaNaPaginaInicial() {
         String urlAtual = driver.getCurrentUrl();
         String urlBase = "https://www.advantageonlineshopping.com";
@@ -308,8 +304,21 @@ public class BasePage {
         if (!urlAtual.equals(urlBase + "/")) {
             System.out.println("🔄 Navegando para página inicial...");
             driver.get(urlBase);
-//            waitForElementVisible(grupoSpeakers, 5);
             System.out.println("✅ Na página inicial");
+        }
+    }
+
+    public void fecharNavegador() {
+        if (driver != null) {
+            driver.quit();
+            System.out.println("Navegador fechado com sucesso!");
+        }
+    }
+
+    public void fecharAba() {
+        if (driver != null) {
+            driver.close();
+            System.out.println("Aba fechada com sucesso!");
         }
     }
 

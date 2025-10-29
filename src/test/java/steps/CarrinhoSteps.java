@@ -31,6 +31,11 @@ public class CarrinhoSteps {
         CarrinhoFunctions.verificarProdutoNoCarrinho();
     }
 
+    @Então("os produtos devem aparecer no carrinho")
+    public void osProdutosDevemAparecerNoCarrinho() {
+        CarrinhoFunctions.verificarOsProdutosNoCarrinho();
+    }
+
     @E("eu altero a quantidade para {int} unidades")
     public void euAlteroAQuantidadeParaUnidades(Integer quantidade) {
         CarrinhoFunctions.alterarQuantidade(quantidade);

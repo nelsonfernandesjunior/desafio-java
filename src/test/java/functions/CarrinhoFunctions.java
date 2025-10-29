@@ -24,6 +24,10 @@ public class CarrinhoFunctions {
         carrinhoPage.verificarProdutoNoCarrinho();
     }
 
+    public static void verificarOsProdutosNoCarrinho() {
+        carrinhoPage.verificarOsProdutosNoCarrinho();
+    }
+
     public static void alterarQuantidade(int quantidade) {
         carrinhoPage.alterarQuantidade(quantidade);
     }

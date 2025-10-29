@@ -19,7 +19,7 @@ Funcionalidade: Adicionar produtos ao carrinho de compras
     Quando eu seleciono um produto na página inicial
     E eu altero a quantidade para 3 unidades
     E eu adiciono o produto ao carrinho
-    Então o produto deve aparecer no carrinho
+    Então os produtos devem aparecer no carrinho
     E o carrinho deve mostrar 3 unidades do produto
 
   @Carrinho @CT-03
@@ -40,5 +40,5 @@ Funcionalidade: Adicionar produtos ao carrinho de compras
     Quando eu seleciono um produto na página inicial
     E eu adicionar 12 unidades
     E eu adiciono o produto ao carrinho
-    Então o produto deve aparecer no carrinho
+    Então os produtos devem aparecer no carrinho
     E o carrinho deve mostrar 10 unidades do produto
