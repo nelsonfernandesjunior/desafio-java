@@ -33,7 +33,7 @@ public class BasePage {
     }
 
     public void click(By locator) {
-        System.out.println("🖱️ Tentando clicar no elemento: " + locator);
+        System.out.println("==> Tentando clicar no elemento: " + locator);
 
         takeScreenshot("ANTES_CLIQUE_" + locator.toString());
 
@@ -43,7 +43,7 @@ public class BasePage {
 
         for (int tentativa = 1; tentativa <= 3; tentativa++) {
             try {
-                System.out.println("🔄 Tentativa " + tentativa + "/3");
+                System.out.println("==> Tentativa " + tentativa + "/3");
 
                 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
                 element.click();
@@ -170,7 +170,7 @@ public class BasePage {
 
         for (int tentativa = 1; tentativa <= 3; tentativa++) {
             try {
-                System.out.println("🔄 Tentativa " + tentativa + "/3");
+                System.out.println("==> Tentativa " + tentativa + "/3");
 
                 WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
 
@@ -219,6 +219,7 @@ public class BasePage {
 
             System.out.println("==> Texto obtido: '" + text + "'");
             System.out.println("==> Conteúdo capturado: " + text);
+            takeScreenshot("TEXTO_OBTIDO_" + locator.toString());
 
             return text;
         } catch (Exception e) {
@@ -250,6 +251,7 @@ public class BasePage {
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].scrollIntoView(true);", element);
             System.out.println("==> Scroll até elemento realizado");
+            takeScreenshot("SCROLL_ATE_ELEMENTO_" + locator.toString());
 
             Thread.sleep(500);
         } catch (Exception e) {
@@ -310,9 +312,9 @@ public class BasePage {
         String urlBase = "https://www.advantageonlineshopping.com";
 
         if (!urlAtual.equals(urlBase + "/")) {
-            System.out.println("🔄 Navegando para página inicial...");
+            System.out.println("==> Navegando para página inicial...");
             driver.get(urlBase);
-            System.out.println("✅ Na página inicial");
+            System.out.println("==> Na página inicial");
         }
     }
 
@@ -330,16 +332,44 @@ public class BasePage {
         }
     }
 
-    private void takeScreenshot(String action) {
+    public void takeScreenshot(String action) {
         try {
             WebDriver driver = DriverManager.getDriver();
             if (driver != null) {
-                String screenshotPath = ScreenshotUtils.takeScreenshot(driver, action);
+                // Sanitiza o nome da ação para evitar caracteres inválidos
+                String sanitizedAction = sanitizeFileName(action);
+                String screenshotPath = ScreenshotUtils.takeScreenshot(driver, sanitizedAction);
                 PdfReportGenerator.addScreenshot(screenshotPath);
             }
         } catch (Exception e) {
-            System.out.println("⚠️ Não foi possível tirar screenshot: " + e.getMessage());
+            System.out.println("==> Não foi possível tirar screenshot: " + e.getMessage());
         }
     }
 
+    // Metodo auxiliar para sanitizar nomes de arquivo
+    private String sanitizeFileName(String fileName) {
+        if (fileName == null) {
+            return "screenshot";
+        }
+
+        // Remove caracteres inválidos para nomes de arquivo no Windows
+        String sanitized = fileName
+                .replace(":", "_")
+                .replace("/", "_")
+                .replace("\\", "_")
+                .replace("*", "_")
+                .replace("?", "_")
+                .replace("\"", "_")
+                .replace("<", "_")
+                .replace(">", "_")
+                .replace("|", "_")
+                .replace(" ", "_");
+
+        // Limita o tamanho do nome
+        if (sanitized.length() > 100) {
+            sanitized = sanitized.substring(0, 100);
+        }
+
+        return sanitized;
+    }
 }

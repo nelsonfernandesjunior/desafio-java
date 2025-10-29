@@ -39,7 +39,9 @@ public class BuscaProdutoPage extends BasePage {
 
     public void abrirSearchBar() throws InterruptedException {
         System.out.println("=> Abrindo a barra de busca.");
+        takeScreenshot("Abrir_Barra_Busca");
         click(searchBar);
+        takeScreenshot("Barra_Busca_Aberta");
         System.out.println("=> Barra de busca aberta.");
         waitForElementVisible(searchBar, 3);
         click(searchBar);
@@ -48,12 +50,14 @@ public class BuscaProdutoPage extends BasePage {
     public void buscarProdutoExistente(String produto) {
         System.out.println("=> Buscando produto: " + produto);
         sendKeysAndEnter(autoComplete, produto);
+        takeScreenshot("Busca_Produto_" + produto.replace(" ", "_"));
     }
 
     public void resultadoBuscaProduto() {
         String produtoEsperado = PRODUTO_UNICO;
 
         waitForElementVisible(resultsSearch, 3);
+        takeScreenshot("Resultado_Busca_Produto_Unico");
         List<WebElement> produtos = driver.findElements(resultsSearch);
 
         System.out.println("==> " + produtos.size() + " produtos '" + produtoEsperado + "' encontrados");
@@ -62,6 +66,7 @@ public class BuscaProdutoPage extends BasePage {
         Assert.assertTrue("==> Apenas " + produtos.size() + " produto(s) encontrado(s) - esperados múltiplos", produtos.size() >= 1);
 
         System.out.println("==> Múltiplos produtos validados com sucesso");
+        takeScreenshot("Resultado_Busca_Produto_Unico_Validado");
     }
 
     public void resultadoBuscaProdutosMultiplos() {
@@ -69,6 +74,7 @@ public class BuscaProdutoPage extends BasePage {
 
         waitForElementVisible(resultsSearch, 3);
         List<WebElement> produtos = driver.findElements(resultsSearch);
+        takeScreenshot("Resultado_Busca_Produtos_Multiplos");
 
         System.out.println("==> " + produtos.size() + " produtos '" + produtoEsperado + "' encontrados");
 
@@ -80,6 +86,7 @@ public class BuscaProdutoPage extends BasePage {
 
     public void buscarProdutoInexistente() throws InterruptedException {
         abrirSearchBar();
+        takeScreenshot("Busca_Produto_Inexistente");
         buscarProdutoExistente(PRODUTO_INEXISTENTE);
     }
 
@@ -95,6 +102,7 @@ public class BuscaProdutoPage extends BasePage {
         );
 
         System.out.println("==> Mensagem de produto inexistente validada");
+        takeScreenshot("Mensagem_Produto_Inexistente");
     }
 
 }

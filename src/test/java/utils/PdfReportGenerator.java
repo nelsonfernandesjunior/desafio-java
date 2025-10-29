@@ -27,13 +27,13 @@ public class PdfReportGenerator {
     public static void addScreenshot(String screenshotPath) {
         if (screenshotPath != null && !screenshotPath.isEmpty() && new File(screenshotPath).exists()) {
             screenshotPaths.add(screenshotPath);
-            System.out.println("📸 Screenshot adicionado ao PDF: " + screenshotPath);
+            System.out.println("==> Screenshot adicionado ao PDF: " + screenshotPath);
         }
     }
 
     public static void generatePdfReport(String testName, String status) {
         if (screenshotPaths.isEmpty()) {
-            System.out.println("⚠️  Nenhum screenshot válido para gerar PDF");
+            System.out.println("==>  Nenhum screenshot válido para gerar PDF");
             return;
         }
 
@@ -45,7 +45,7 @@ public class PdfReportGenerator {
             File pdfDir = new File("evidencias/pdf-reports");
             if (!pdfDir.exists()) {
                 boolean created = pdfDir.mkdirs();
-                System.out.println("📁 Diretório criado: " + created);
+                System.out.println("==> Diretório criado: " + created);
             }
 
             String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -92,18 +92,18 @@ public class PdfReportGenerator {
                         document.add(new Paragraph(" ")); // linha em branco
 
                     } catch (Exception e) {
-                        System.err.println("❌ Erro ao adicionar imagem ao PDF: " + e.getMessage());
-                        document.add(new Paragraph("❌ Erro ao carregar evidência: " + screenshotFile.getName()));
+                        System.err.println("==> Erro ao adicionar imagem ao PDF: " + e.getMessage());
+                        document.add(new Paragraph("==> Erro ao carregar evidência: " + screenshotFile.getName()));
                     }
                 } else {
-                    System.out.println("⚠️  Arquivo não encontrado: " + screenshotPath);
+                    System.out.println("==>  Arquivo não encontrado: " + screenshotPath);
                 }
             }
 
-            System.out.println("📄 PDF gerado com sucesso: " + pdfPath);
+            System.out.println("==> PDF gerado com sucesso: " + pdfPath);
 
         } catch (DocumentException | IOException e) {
-            System.err.println("❌ Erro ao gerar PDF: " + e.getMessage());
+            System.err.println("==> Erro ao gerar PDF: " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (document != null && document.isOpen()) {
@@ -113,7 +113,7 @@ public class PdfReportGenerator {
                 try {
                     fos.close();
                 } catch (IOException e) {
-                    System.err.println("❌ Erro ao fechar arquivo: " + e.getMessage());
+                    System.err.println("==> Erro ao fechar arquivo: " + e.getMessage());
                 }
             }
             // Limpa lista para próximo teste
@@ -123,7 +123,7 @@ public class PdfReportGenerator {
 
     public static void clearScreenshots() {
         screenshotPaths.clear();
-        System.out.println("🧹 Lista de screenshots limpa");
+        System.out.println("==> Lista de screenshots limpa");
     }
 
     public static int getScreenshotCount() {

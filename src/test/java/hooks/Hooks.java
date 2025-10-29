@@ -63,7 +63,7 @@ public class Hooks {
         if (navegadorAberto && homePage != null) {
             homePage.fecharNavegador();
             navegadorAberto = false;
-            System.out.println("✅ Navegador fechado com sucesso");
+            System.out.println("==> Navegador fechado com sucesso");
         }
     }
 

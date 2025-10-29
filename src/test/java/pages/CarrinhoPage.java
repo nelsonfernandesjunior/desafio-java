@@ -52,14 +52,17 @@ public class CarrinhoPage extends BasePage {
 
         garantirQueEstaNaPaginaInicial();
         click(grupoSpeakers);
+        takeScreenshot("Grupo_Speakers_Selecionado");
         waitForElementVisible(wirelessSpeaker, 4);
         scrollToElement(wirelessSpeaker);
         click(wirelessSpeaker);
+        takeScreenshot("Produto_Wireless_Speaker_Selecionado");
     }
 
     public void adicionarProdutoAoCarrinho() {
         System.out.println("==> Adicionando produto ao carrinho");
         click(adicionarCarrinho);
+        takeScreenshot("Produto_Adicionado_Ao_Carrinho");
 
         try {
             waitForElementVisible(successMessage, 3);
@@ -83,6 +86,7 @@ public class CarrinhoPage extends BasePage {
     public boolean verificarProdutoNoCarrinhoPorNome(String nomeProduto) {
         System.out.println("==> Verificando produto '" + nomeProduto + "' no carrinho");
         acessarCarrinho();
+        takeScreenshot("Carrinho_De_Compras");
         waitForElementVisible(botaoCheckOut, 10);
 
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -107,6 +111,7 @@ public class CarrinhoPage extends BasePage {
         waitForElementVisible(quantidadeProduto, 5);
         WebElement quantityElement = driver.findElement(quantidadeProduto);
         click(quantidadeProduto);
+        takeScreenshot("Campo_Quantidade_Clicado");
         limparCampo(quantidadeProduto);
         quantityElement.sendKeys(String.valueOf(quantidade));
         System.out.println("==> Quantidade alterada para " + quantidade);
@@ -121,6 +126,7 @@ public class CarrinhoPage extends BasePage {
 
         Assert.assertEquals("==> Quantidade incorreta no carrinho", quantidadeEsperada, quantidadeAtual);
         System.out.println("==> Quantidade verificada: " + quantidadeAtual);
+        takeScreenshot("Quantidade_Verificada_No_Carrinho");
         removerProdutoDoCarrinho();
     }
 
@@ -132,14 +138,18 @@ public class CarrinhoPage extends BasePage {
 
     public void selecionarSegundoProduto() throws InterruptedException {
         click(grupoTablets);
+        takeScreenshot("Grupo_Tablets_Selecionado");
         waitForElementVisible(proTablet, 4);
         scrollToElement(proTablet);
+        takeScreenshot("Produto_Pro_Tablet_Selecionado");
         click(proTablet);
+        takeScreenshot("Produto_Pro_Tablet_Aberto");
     }
 
     public void verificarDoisProdutosNoCarrinho() {
         System.out.println(" ==>Verificando 2 produtos no carrinho");
         acessarCarrinho();
+        takeScreenshot("Carrinho_Com_Dois_Produtos");
         waitForElementVisible(totalItensCarrinho, 3);
 
         String textoTotalItensCarrinho = driver.findElement(totalItensCarrinho).getText();
@@ -155,6 +165,7 @@ public class CarrinhoPage extends BasePage {
     public void acessarCarrinho() {
         System.out.println("==> Acessando carrinho de compras");
         click(iconeCarrinho);
+        takeScreenshot("Carrinho_De_Compras_Aberto");
         System.out.println("==> Carrinho acessado");
     }
 
@@ -162,6 +173,7 @@ public class CarrinhoPage extends BasePage {
         System.out.println("==> Buscando quantidade do produto: " + nomeProduto);
 
         String textoQuantidade = getText(qtdeProdutoCarrinho);
+        takeScreenshot("Quantidade_Do_Produto_Capturada");
         System.out.println("==> Conteúdo capturado QUANTIDADE DO PRODUTO: " + textoQuantidade);
 
         try {
@@ -202,9 +214,12 @@ public class CarrinhoPage extends BasePage {
         System.out.println("==> Selecionando produto esgotado na página inicial");
 
         click(grupoHeadPhones);
+        takeScreenshot("Grupo_Headphones_Selecionado");
         waitForElementVisible(boseSoundLink, 4);
         scrollToElement(boseSoundLink);
+        takeScreenshot("Produto_Bose_Soundlink_Selecionado");
         click(boseSoundLink);
+        takeScreenshot("Produto_Bose_Soundlink_Aberto");
         isElementVisible(adicionarCarrinho);
         isElementClickable(adicionarCarrinho);
         Assert.assertFalse("Botão 'Adicionar ao Carrinho' deveria NÃO estar clicável para produto esgotado",
@@ -219,6 +234,7 @@ public class CarrinhoPage extends BasePage {
         acessarCarrinho();
 
         String carrinhoTexto = driver.findElement(textoCarrinhoVazio).getText();
+        takeScreenshot("Carrinho_Vazio_Verificado");
         Assert.assertTrue("==> O carrinho não está vazio", carrinhoTexto.contains("Your shopping cart is empty"));
 
         System.out.println("==> Carrinho vazio verificado");
