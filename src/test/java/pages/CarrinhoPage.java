@@ -51,6 +51,7 @@ public class CarrinhoPage extends BasePage {
         System.out.println("==> Selecionando produto na página inicial");
 
         garantirQueEstaNaPaginaInicial();
+        waitForElementClickable(grupoSpeakers, 4);
         click(grupoSpeakers);
         takeScreenshot("Grupo_Speakers_Selecionado");
         waitForElementVisible(wirelessSpeaker, 4);
