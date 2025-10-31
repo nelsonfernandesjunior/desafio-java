@@ -14,14 +14,13 @@ import utils.ScreenshotUtils;
 public class Hooks {
     private static boolean navegadorAberto = false;
     private static HomePage homePage;
-    private String currentScenarioName; // ← ADICIONAR ESTA VARIÁVEL
+    private String currentScenarioName;
 
     @Before
     public void setUp(Scenario scenario) {
         System.out.println("=> Iniciando o cenário de teste: " + scenario.getName());
-        this.currentScenarioName = scenario.getName(); // ← INICIALIZAR A VARIÁVEL
+        this.currentScenarioName = scenario.getName();
 
-        // Prepara sistema de screenshots
         ScreenshotUtils.resetCounter(scenario.getName());
         PdfReportGenerator.clearScreenshots();
 
@@ -49,7 +48,7 @@ public class Hooks {
 
         // Gera PDF do relatório
         String status = scenario.isFailed() ? "FALHOU" : "PASSOU";
-        PdfReportGenerator.generatePdfReport(currentScenarioName, status); // ← USAR A VARIÁVEL
+        PdfReportGenerator.generatePdfReport(currentScenarioName, status);
 
         if (scenario.isFailed()) {
             System.out.println("=> Cenário FALHOU: " + scenario.getName());
