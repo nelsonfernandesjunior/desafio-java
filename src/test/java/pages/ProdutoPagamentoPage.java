@@ -37,6 +37,7 @@ public class ProdutoPagamentoPage extends BasePage {
     private By campoQuantidade = By.name("quantity");
     private By botaoAumentarQuantidade = By.cssSelector(".plus");
     private By botaoDiminuirQuantidade = By.cssSelector(".minus");
+    private By botaoRemove = By.cssSelector("a.remove.red");
 
     public ProdutoPagamentoPage() {
         super();
@@ -231,5 +232,17 @@ public class ProdutoPagamentoPage extends BasePage {
             System.out.println("==> Erro ao verificar botão checkout: " + e.getMessage());
             return false;
         }
+    }
+
+    public void voltarPaginaAnterior() {
+        System.out.println("==> Voltando para a página anterior");
+        driver.navigate().back();
+        takeScreenshot("VOLTAR_PAGINA_ANTERIOR");
+        System.out.println("==> Navegação de volta realizada");
+    }
+
+    public void removerProdutoDoCarrinho() {
+        click(botaoRemove);
+
     }
 }

@@ -38,6 +38,9 @@ public class ProdutoPagamentoFunctions {
         Assert.assertTrue("Produto '" + produto + "' não encontrado na tela de pagamento",
                 produtoPagamentoPage.produtoEstaNaTelaPagamento(produto));
 
+        ProdutoPagamentoFunctions.produtoPagamentoPage.voltarPaginaAnterior();
+        ProdutoPagamentoFunctions.produtoPagamentoPage.removerProdutoDoCarrinho();
+
         System.out.println("==> [Functions] Produto '" + produto + "' verificado na tela de pagamento");
     }
 
@@ -54,6 +57,9 @@ public class ProdutoPagamentoFunctions {
                 produtoPagamentoPage.verificarQuantidadeProduto(produto, quantidadeEsperada));
 
         System.out.println("==> [Functions] Quantidade " + quantidade + " verificada para produto: " + produto);
+
+        ProdutoPagamentoFunctions.produtoPagamentoPage.voltarPaginaAnterior();
+        ProdutoPagamentoFunctions.produtoPagamentoPage.removerProdutoDoCarrinho();
     }
 
     public static void verificarMensagemCarrinhoVazio(String mensagem) {

@@ -12,7 +12,7 @@ import io.cucumber.junit.CucumberOptions;
                 "pretty",
                 "html:target/cucumber-reports.html"},
         monochrome = true,
-        tags = "@CT-09"
+        tags = "@Busca"
 )
 public class TestRunner {
 }
